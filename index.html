@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SOS Card — emergency info on your lock screen</title>
+<meta name="description" content="Put your blood group, allergies, medicines and emergency contacts on your phone's lock screen and on a wallet card. Free, offline, private.">
+<meta name="theme-color" content="#D7192B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="band">
+  <div class="wrap band-in">
+    <div class="logo" aria-hidden="true">SOS</div>
+    <div>
+      <h1>SOS Card</h1>
+      <p>If you are in an accident, a stranger can't unlock your phone. Put what they need to know on the lock screen.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <form id="form" class="form" autocomplete="off" novalidate>
+    <fieldset>
+      <legend>About you</legend>
+      <div class="row">
+        <label class="f grow">Full name<input name="name" type="text" placeholder="Ronak Jain"></label>
+        <label class="f age">Age<input name="age" type="text" inputmode="numeric" maxlength="3" placeholder="34"></label>
+      </div>
+      <div class="f">
+        <span class="f-l" id="bg-l">Blood group</span>
+        <div class="chips" role="radiogroup" aria-labelledby="bg-l" id="blood">
+          <label><input type="radio" name="blood" value="A+"><span>A+</span></label>
+          <label><input type="radio" name="blood" value="A-"><span>A−</span></label>
+          <label><input type="radio" name="blood" value="B+"><span>B+</span></label>
+          <label><input type="radio" name="blood" value="B-"><span>B−</span></label>
+          <label><input type="radio" name="blood" value="AB+"><span>AB+</span></label>
+          <label><input type="radio" name="blood" value="AB-"><span>AB−</span></label>
+          <label><input type="radio" name="blood" value="O+"><span>O+</span></label>
+          <label><input type="radio" name="blood" value="O-"><span>O−</span></label>
+          <label><input type="radio" name="blood" value=""><span>Not sure</span></label>
+        </div>
+      </div>
+      <label class="f">Allergies<input name="allergies" type="text" placeholder="Penicillin, peanuts"></label>
+      <label class="f">Medical conditions<input name="conditions" type="text" placeholder="Type 2 diabetes, asthma"></label>
+      <label class="f">Medicines I take daily<input name="meds" type="text" placeholder="Metformin 500mg, inhaler"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Call these people</legend>
+      <div id="contacts"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Helpful extras</legend>
+      <div class="row">
+        <label class="f grow">Doctor's name<input name="doctor" type="text" placeholder="Dr. Mehta"></label>
+        <label class="f grow">Doctor's phone<input name="doctorPhone" type="tel" placeholder="0294 241 0000"></label>
+      </div>
+      <label class="f">City / area<input name="city" type="text" placeholder="Udaipur, Rajasthan"></label>
+      <label class="f">Languages I speak<input name="langs" type="text" placeholder="Hindi, English, Marwari"></label>
+      <label class="f">Note for whoever helps me<input name="note" type="text" maxlength="90" placeholder="I wear contact lenses"></label>
+      <label class="check"><input name="donor" type="checkbox"> I am a registered organ donor</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Wallpaper</legend>
+      <div class="f">
+        <span class="f-l" id="th-l">Colour</span>
+        <div class="chips" role="radiogroup" aria-labelledby="th-l">
+          <label><input type="radio" name="theme" value="red" checked><span>Signal red</span></label>
+          <label><input type="radio" name="theme" value="night"><span>Night</span></label>
+          <label><input type="radio" name="theme" value="white"><span>White</span></label>
+        </div>
+      </div>
+      <label class="f">Phone screen size
+        <select name="size">
+          <option value="1080x2400">Most Android phones (1080 × 2400)</option>
+          <option value="1080x2340">Android (1080 × 2340)</option>
+          <option value="1179x2556">iPhone 14/15/16 (1179 × 2556)</option>
+          <option value="1290x2796">iPhone Pro Max / Plus (1290 × 2796)</option>
+          <option value="1170x2532">iPhone 12/13 (1170 × 2532)</option>
+          <option value="1440x3200">Android high-res (1440 × 3200)</option>
+        </select>
+      </label>
+    </fieldset>
+    <p class="privacy">Everything stays on this device. Nothing is uploaded — the app works with no internet.</p>
+  </form>
+
+  <aside class="preview" aria-label="Preview">
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-view="wall">Lock screen</button>
+      <button type="button" role="tab" aria-selected="false" data-view="card">Wallet card</button>
+    </div>
+    <div class="phone" id="view-wall">
+      <canvas id="wall" width="1080" height="2400" aria-label="Lock screen wallpaper preview"></canvas>
+      <div class="clock" aria-hidden="true"><span id="clock-t">10:42</span><small id="clock-d">Wednesday, 14 October</small></div>
+    </div>
+    <div class="cards" id="view-card" hidden>
+      <canvas id="card-front" width="1012" height="638" aria-label="Wallet card front"></canvas>
+      <canvas id="card-back" width="1012" height="638" aria-label="Wallet card back"></canvas>
+    </div>
+    <div class="dl">
+      <button type="button" class="btn primary" id="dl-wall">Download wallpaper</button>
+      <button type="button" class="btn" id="dl-card">Download wallet card</button>
+      <button type="button" class="btn" id="print">Print card</button>
+    </div>
+    <details class="how">
+      <summary>How to set it on your lock screen</summary>
+      <p><strong>Android:</strong> open the downloaded image in Photos or Gallery → ⋮ menu → Set as wallpaper → Lock screen.</p>
+      <p><strong>iPhone:</strong> open it in Photos → Share → Use as Wallpaper → set as Lock Screen. Move the clock so it doesn't cover your details.</p>
+      <p>Also fill in your phone's own emergency info (iPhone: Health → Medical ID, Android: Settings → Safety & emergency). Responders know to look there too.</p>
+    </details>
+  </aside>
+</main>
+
+<div class="print-sheet" aria-hidden="true">
+  <img id="print-front" alt="">
+  <img id="print-back" alt="">
+  <p>Cut along the edges, fold in the middle and keep it in your wallet behind your ID.</p>
+</div>
+
+<footer class="foot wrap">
+  <p>Free and open source. Works offline. <a href="https://github.com/jainronakwork-jr/sos-card" rel="noopener" target="_blank">Source on GitHub</a></p>
+</footer>
+<script src="vendor/qrcode.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
